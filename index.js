@@ -20,6 +20,10 @@ app.use(cors({
 }));
 
 
+// Routes
+app.use("/api/v1/categories" , require("./routes/CategoryRoute"));
+
+
 
 
 // Run server
