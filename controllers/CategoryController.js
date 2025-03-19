@@ -24,7 +24,12 @@ module.exports.getAllCategories = asyncHandler(async (req , res) => {
 // ==================================
 module.exports.getCategoryById = asyncHandler(async (req , res) => {
     const category = await CategoryModel.findById(req.params.id);
-    if (!category) return res.status(404).json({message: "Category not found"})
+    if (!category){
+        return res.status(404).json({message: "Category not found"})
+    }
+
+    res.status(200).json({data: category})
+        
 })
 
 
