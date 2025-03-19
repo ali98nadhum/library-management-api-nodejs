@@ -1,5 +1,5 @@
-const { getAllCategories, createCategory } = require("../controllers/CategoryController");
-const { createCategoryValidator } = require("c:/Users/alina/OneDrive/Desktop/development/api-ecommerce/utils/vaildators/CategoryVaildators");
+const { getAllCategories, createCategory, getCategoryById } = require("../controllers/CategoryController");
+const { getOneCategoryValidator , createCategoryValidator } = require("../utils/vaildators/CategoryVaildators");
 const router = require("express").Router();
 
 
@@ -11,7 +11,8 @@ router.route("/")
 .post(createCategoryValidator , createCategory)
 
 
-
+router.route("/:id")
+.get(getOneCategoryValidator , getCategoryById)
 
 
 
