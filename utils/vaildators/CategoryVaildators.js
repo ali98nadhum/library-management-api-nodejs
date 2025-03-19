@@ -9,3 +9,9 @@ exports.createCategoryValidator = [
     .isLength({max:50}).withMessage("Too long category title"),
     VaildatorMiddleware,
 ]
+
+
+exports.getOneCategoryValidator = [
+    check("id").isMongoId().withMessage("Invalid category id"),
+    VaildatorMiddleware
+]
