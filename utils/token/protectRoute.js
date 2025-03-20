@@ -4,12 +4,11 @@ const {UserModel} = require("../../models/UserModel");
 
 
 
-exports.protectRoute = asyncHandler(async(req , res , next) => {
+const protectRoute = asyncHandler(async(req , res , next) => {
     // 1- check if token exists
     let token;
     if(req.headers.authorization && req.headers.authorization.startsWith("Bearer")){
         token = req.headers.authorization.split(" ")[1]
-        console.log("Token:", token)
     }
 
     
@@ -30,7 +29,9 @@ exports.protectRoute = asyncHandler(async(req , res , next) => {
         req.user = decoded;
 
         next();
-
-    
-
 })
+
+
+module.exports = {
+    protectRoute
+}
