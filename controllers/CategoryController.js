@@ -59,4 +59,6 @@ module.exports.deleteCategory = asyncHandler(async(req , res) => {
     if(!category){
         return res.status(404).json({message: "Category not found"})
     }
+
+    res.status(200).json({message: "Category deleted successfully"})
 })
