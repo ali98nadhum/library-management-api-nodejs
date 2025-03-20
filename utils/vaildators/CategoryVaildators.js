@@ -15,3 +15,9 @@ exports.getOneCategoryValidator = [
     check("id").isMongoId().withMessage("Invalid category id"),
     VaildatorMiddleware
 ]
+
+
+exports.deleteCategoryValidator = [
+    check("id").isMongoId().withMessage("Invalid category id"),
+    VaildatorMiddleware
+]
