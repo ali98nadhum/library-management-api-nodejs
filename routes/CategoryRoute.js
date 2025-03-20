@@ -11,6 +11,7 @@ const {
   deleteCategoryValidator,
   updateCategoryValidator,
 } = require("../utils/vaildators/CategoryVaildators");
+const {protectRoute} = require("../utils/token/protectRoute");
 const router = require("express").Router();
 
 
@@ -18,7 +19,7 @@ const router = require("express").Router();
 router
   .route("/")
   .get(getAllCategories)
-  .post(createCategoryValidator, createCategory);
+  .post(protectRoute ,createCategoryValidator, createCategory);
 
 
 
