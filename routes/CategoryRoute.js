@@ -1,5 +1,5 @@
-const { getAllCategories, createCategory, getCategoryById } = require("../controllers/CategoryController");
-const { getOneCategoryValidator , createCategoryValidator } = require("../utils/vaildators/CategoryVaildators");
+const { getAllCategories, createCategory, getCategoryById, deleteCategory } = require("../controllers/CategoryController");
+const { getOneCategoryValidator , createCategoryValidator, deleteCategoryValidator } = require("../utils/vaildators/CategoryVaildators");
 const router = require("express").Router();
 
 
@@ -13,6 +13,7 @@ router.route("/")
 
 router.route("/:id")
 .get(getOneCategoryValidator , getCategoryById)
+.delete(deleteCategoryValidator , deleteCategory)
 
 
 
