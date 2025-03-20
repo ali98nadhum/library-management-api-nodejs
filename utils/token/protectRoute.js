@@ -1,4 +1,5 @@
 const asyncHandler = require("express-async-handler");
+const jwt = require('jsonwebtoken');
 
 
 
@@ -13,4 +14,7 @@ exports.protectRoute = asyncHandler(async(req , res , next) => {
     if(!token){
         return res.status(401).json({message: "you are not logged "});
     }
+
+     // 2- verify token
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
 })
