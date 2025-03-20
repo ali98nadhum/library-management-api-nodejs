@@ -45,3 +45,21 @@ exports.registerValidator = [
       }),
     VaildatorMiddleware,
   ];
+
+
+
+  exports.loginValidator = [
+    check("email")
+    .notEmpty().withMessage("email is required")
+    .isEmail().withMessage("Invalid email")
+    .custom(async (val) => {
+      const existingUser = await UserModel.findOne({ email: val });
+      if (existingUser) {
+        throw new Error("Email already exists");
+      }
+    }),
+    check("password")
+    .notEmpty().withMessage("password is required")
+    .isLength({ min: 8 }).withMessage("Password must be at least 8 characters"),
+    VaildatorMiddleware,
+  ]
