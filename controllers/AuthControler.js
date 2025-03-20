@@ -30,5 +30,19 @@ module.exports.register = asyncHandler(async(req , res) => {
 
   res
   .status(201)
-  .json({ message: "User registered successfully"});
+  .json({ message: "User registered successfully please login to your account"});
+})
+
+
+
+// ==================================
+// @desc login 
+// @route /api/v1/auth/login
+// @method POST
+// @access public
+// ==================================
+module.exports.login = asyncHandler(async(req , res) => {
+  const {email , password} = req.body;
+
+  
 })
