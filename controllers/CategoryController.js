@@ -47,6 +47,29 @@ module.exports.createCategory= asyncHandler(async (req , res) => {
 })
 
 
+// ==================================
+// @desc Update category
+// @route /api/v1/Categories/:id
+// @method PUT
+// @access private ( only admin )
+// ==================================
+module.exports.updateCategory = asyncHandler(async(req , res) => {
+    const {title} = req.body;
+
+    const category = await CategoryModel.findByIdAndUpdate(
+        req.params.id,
+        {title},
+        {new: true}
+     )
+
+     if(!category){
+        return res.status(404).json({message: "Category not found"})
+    }
+
+    res.status(200).json({message: "Category updated successfully" , category})
+})
+
+
 
 // ==================================
 // @desc Delete category 
