@@ -7,7 +7,7 @@ const UserSchema = new mongoose.Schema(
       required: [true, "name is required"],
       trim: true,
       minlength: [3, "Category title should be at least 3 characters long"],
-      maxlength: [50, "Category title should not exceed 50 characters long"],
+      maxlength: [25, "Category title should not exceed 50 characters long"],
     },
     username: {
       type: String,
