@@ -21,3 +21,11 @@ exports.deleteCategoryValidator = [
     check("id").isMongoId().withMessage("Invalid category id"),
     VaildatorMiddleware
 ]
+
+exports.updateCategoryValidator = [
+    check("title")
+    .isLength({min:3}).withMessage("Too short category title")
+    .isLength({max:50}).withMessage("Too long category title"),
+    check("id").isMongoId().withMessage("Invalid category id"),
+    VaildatorMiddleware,
+]
