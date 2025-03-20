@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const jwt = require('jsonwebtoken');
+const {UserModel} = require("../../models/UserModel");
 
 
 
@@ -8,6 +9,7 @@ exports.protectRoute = asyncHandler(async(req , res , next) => {
     let token;
     if(req.headers.authorization && req.headers.authorization.startsWith("Bearer")){
         token = req.headers.authorization.split(" ")[1]
+        console.log("Token:", token)
     }
 
     
@@ -15,11 +17,11 @@ exports.protectRoute = asyncHandler(async(req , res , next) => {
         return res.status(401).json({message: "you are not logged "});
     }
 
-    try {
-        // 2- verify token
+      // 2- verify token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        // 3- check if user exists
+
+         // 3- check if user exists
         const currentUser = await UserModel.findById(decoded.id)
         if(!currentUser){
             return res.status(401).json({message: "user no longer exists" });
@@ -28,8 +30,7 @@ exports.protectRoute = asyncHandler(async(req , res , next) => {
         req.user = decoded;
 
         next();
-    } catch (error) {
-        return res.status(401).json({ message: "your token is invalid or expired" });
-    }
+
+    
 
 })
