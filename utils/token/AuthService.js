@@ -4,7 +4,7 @@ const {UserModel} = require("../../models/UserModel");
 
 
 
-const protectRoute = asyncHandler(async(req , res , next) => {
+exports.protect = asyncHandler(async(req , res , next) => {
     // 1- check if token exists
     let token;
     if(req.headers.authorization && req.headers.authorization.startsWith("Bearer")){
@@ -32,6 +32,13 @@ const protectRoute = asyncHandler(async(req , res , next) => {
 })
 
 
-module.exports = {
-    protectRoute
-}
+
+exports.allowedTo = (...roles) => {
+    return asyncHandler(async(req , res , next) => {
+        if(!roles.includes(req.user.role)){
+            return res.status(403).json({message: "you are not authorized to access this route" });
+        }
+        next();
+    });
+};
+
