@@ -69,3 +69,32 @@ module.exports.login = asyncHandler(async(req , res) => {
 
   res.status(200).json({message:`login_success hi ${user.name}` , token:token});
 })
+
+
+module.exports.changePassword = asyncHandler(async(req , res) => {
+  const userId = req.user.id;
+  const {oldPassword, newPassword} = req.body;
+
+  console.log(userId);
+  
+
+  if (!currentPassword || !newPassword) {
+    return res.status(400).json({ message: 'يرجى إدخال كلمة السر الحالية والجديدة' });
+  }
+
+  const user = await User.findById(userId);
+  if (!user) {
+    return res.status(404).json({ message: 'المستخدم غير موجود' });
+  }
+
+  const isMatch = await bcrypt.compare(currentPassword, user.password);
+  if (!isMatch) {
+    return res.status(401).json({ message: 'كلمة السر الحالية غير صحيحة' });
+  }
+
+
+  user.password = newPassword;
+  await user.save();
+
+  res.status(200).json({ message: 'تم تغيير كلمة السر بنجاح' });
+})
