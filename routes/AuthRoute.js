@@ -1,5 +1,5 @@
 const { register, login, changePassword } = require("../controllers/AuthControler");
-const { registerValidator, loginValidator } = require("../utils/vaildators/AuthValidator");
+const { registerValidator, loginValidator, changePasswordValidator } = require("../utils/vaildators/AuthValidator");
 const AuthService = require("../utils/token/AuthService");
 
 const router = require("express").Router();
@@ -11,7 +11,7 @@ router
 
 
 router.route("/login").post(loginValidator , login)
-router.route("/change-password").post(AuthService.protect,changePassword)
+router.route("/change-password").post(AuthService.protect,AuthService.allowedTo("admin"),changePasswordValidator,changePassword)
 
 
   module.exports = router;
