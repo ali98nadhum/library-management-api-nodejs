@@ -1,5 +1,6 @@
-const { register, login } = require("../controllers/AuthControler");
+const { register, login, changePassword } = require("../controllers/AuthControler");
 const { registerValidator, loginValidator } = require("../utils/vaildators/AuthValidator");
+const AuthService = require("../utils/token/AuthService");
 
 const router = require("express").Router();
 
@@ -10,6 +11,7 @@ router
 
 
 router.route("/login").post(loginValidator , login)
+router.route("/change-password").post(AuthService.protect,changePassword)
 
 
   module.exports = router;
