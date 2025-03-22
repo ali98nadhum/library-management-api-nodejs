@@ -77,7 +77,7 @@ module.exports.login = asyncHandler(async(req , res) => {
 // @desc change-password
 // @route /api/v1/auth/change-password
 // @method POST
-// @access private (only admin)
+// @access private (only logged user)
 // ==================================
 module.exports.changePassword = asyncHandler(async(req , res) => {
 
@@ -107,5 +107,5 @@ module.exports.changePassword = asyncHandler(async(req , res) => {
   user.password = hashedPassword;
   await user.save();
 
-  res.status(200).json({ message: "pasword chThe password has been changed successfully"});
+  res.status(200).json({ message: "password has been changed successfully"});
 })

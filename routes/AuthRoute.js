@@ -11,7 +11,7 @@ router
 
 
 router.route("/login").post(loginValidator , login)
-router.route("/change-password").post(AuthService.protect,AuthService.allowedTo("admin"),changePasswordValidator,changePassword)
+router.route("/change-password").post(AuthService.protect,changePasswordValidator,changePassword)
 
 
   module.exports = router;
