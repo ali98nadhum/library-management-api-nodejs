@@ -57,3 +57,14 @@ exports.registerValidator = [
     .isLength({ min: 8 }).withMessage("Password must be at least 8 characters"),
     VaildatorMiddleware,
   ]
+
+
+  exports.changePasswordValidator = [
+    check("oldPassword")
+    .notEmpty()
+    .withMessage("old password is required"),
+    check("newPassword")
+    .notEmpty().withMessage("new password is required")
+    .isLength({ min: 8 }).withMessage("Password must be at least 8 characters"),
+    VaildatorMiddleware,
+  ]
