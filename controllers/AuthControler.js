@@ -83,26 +83,29 @@ module.exports.changePassword = asyncHandler(async(req , res) => {
 
   const {oldPassword, newPassword} = req.body;
 
-  // take userId from req token
+  // take userId from  token
   const userId = req.user.id;
   
-  if (!oldPassword || !newPassword) {
-    return res.status(400).json({ message: 'يرجى إدخال كلمة السر الحالية والجديدة' });
-  }
 
+  // get user from database
   const user = await UserModel.findById(userId);
   if (!user) {
-    return res.status(404).json({ message: 'المستخدم غير موجود' });
+    return res.status(404).json({ message: "user not found" });
   }
 
+  // check if old password from body matches with current password in database
   const isMatch = await bcrypt.compare(oldPassword, user.password);
   if (!isMatch) {
-    return res.status(401).json({ message: 'كلمة السر الحالية غير صحيحة' });
+    return res.status(401).json({ message: "The old password is wrong"});
   }
 
 
-  user.password = newPassword;
+   // hash password
+   const hashedPassword = await hashPassword(newPassword);
+
+   // update password in database
+  user.password = hashedPassword;
   await user.save();
 
-  res.status(200).json({ message: 'تم تغيير كلمة السر بنجاح' });
+  res.status(200).json({ message: "pasword chThe password has been changed successfully"});
 })
