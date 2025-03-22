@@ -71,23 +71,31 @@ module.exports.login = asyncHandler(async(req , res) => {
 })
 
 
+
+
+// ==================================
+// @desc change-password
+// @route /api/v1/auth/change-password
+// @method POST
+// @access private (only admin)
+// ==================================
 module.exports.changePassword = asyncHandler(async(req , res) => {
-  const userId = req.user.id;
+
   const {oldPassword, newPassword} = req.body;
 
-  console.log(userId);
+  // take userId from req token
+  const userId = req.user.id;
   
-
-  if (!currentPassword || !newPassword) {
+  if (!oldPassword || !newPassword) {
     return res.status(400).json({ message: 'يرجى إدخال كلمة السر الحالية والجديدة' });
   }
 
-  const user = await User.findById(userId);
+  const user = await UserModel.findById(userId);
   if (!user) {
     return res.status(404).json({ message: 'المستخدم غير موجود' });
   }
 
-  const isMatch = await bcrypt.compare(currentPassword, user.password);
+  const isMatch = await bcrypt.compare(oldPassword, user.password);
   if (!isMatch) {
     return res.status(401).json({ message: 'كلمة السر الحالية غير صحيحة' });
   }
