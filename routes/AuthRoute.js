@@ -1,17 +1,32 @@
-const { register, login, changePassword } = require("../controllers/AuthControler");
-const { registerValidator, loginValidator, changePasswordValidator } = require("../utils/vaildators/AuthValidator");
+const {
+  register,
+  login,
+  changePassword,
+} = require("../controllers/AuthControler");
+const {
+  registerValidator,
+  loginValidator,
+  changePasswordValidator,
+} = require("../utils/vaildators/AuthValidator");
 const AuthService = require("../utils/token/AuthService");
-
 const router = require("express").Router();
 
-
-
+// Register route
 router
-.route("/register").post(registerValidator , register)
+  .route("/register")
+  .post(
+    AuthService.protect,
+    AuthService.allowedTo("admin"),
+    registerValidator,
+    register
+  );
 
+  // login route
+router.route("/login").post(loginValidator, login);
 
-router.route("/login").post(loginValidator , login)
-router.route("/change-password").post(AuthService.protect,changePasswordValidator,changePassword)
+// change-password route
+router
+  .route("/change-password")
+  .post(AuthService.protect, changePasswordValidator, changePassword);
 
-
-  module.exports = router;
+module.exports = router;
