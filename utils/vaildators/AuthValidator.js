@@ -68,3 +68,9 @@ exports.registerValidator = [
     .isLength({ min: 8 }).withMessage("Password must be at least 8 characters"),
     VaildatorMiddleware,
   ]
+
+
+  exports.deleteUserValidator = [
+      check("id").isMongoId().withMessage("Invalid category id"),
+      VaildatorMiddleware
+  ]

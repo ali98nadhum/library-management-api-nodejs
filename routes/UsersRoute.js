@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const AuthService = require("../utils/token/AuthService");
 const { getAllUsers, deleteUser } = require("../controllers/UserController");
+const {deleteUserValidator} = require("../utils/vaildators/AuthValidator");
 
 router
   .route("/get-all-users")
@@ -9,6 +10,6 @@ router
 
   router
   .route("/delete-user/:id")
-  .delete(AuthService.protect,AuthService.allowedTo("admin"),deleteUser);
+  .delete(AuthService.protect,AuthService.allowedTo("admin"),deleteUserValidator,deleteUser);
 
 module.exports = router;
