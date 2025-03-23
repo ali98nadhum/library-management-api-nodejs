@@ -3,6 +3,9 @@ const {UserModel} = require("../models/UserModel");
 const {hashPassword} = require("../helper/hashPassword");
 const {generateToken} = require("../utils/token/generateToken");
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
+const sendEmail = require("../utils/email/sendEmail");
+const verifyCodeTemplate = require("../utils/emailTemplates/verifyCodeTemplate");
 
 
 // ==================================
@@ -17,22 +20,43 @@ module.exports.register = asyncHandler(async(req , res) => {
     // hash password
     const hashedPassword = await hashPassword(password);
 
+    // hash Verify code
+    const VerifyCode = Math.floor(100000 + Math.random() * 900000).toString();
+    const hashVerifyCode = crypto.createHash('sha256').update(VerifyCode).digest('hex');
+
     // Create new user
     const newUser = new UserModel({
         name,
         username,
         email,
-        password: hashedPassword
+        password: hashedPassword,
+        verifyCode: hashVerifyCode,
+        verifyCodeExpires: Date.now() + 10 * 60 * 1000,
     });
 
 
     // Save user to database
   await newUser.save();
 
+  // send email to verified user
+  try {
+    await sendEmail({
+      email: newUser.email,
+      subject: "كود التفعيل الخاص بك صالح لمده 10 دقائق فقط",
+      message: verifyCodeTemplate(newUser.email , VerifyCode)
+    })
+  } catch (error) {
+    newUser.verifyCode = undefined,
+    newUser.verifyCodeExpires = undefined
+    newUser.isActive = false
+
+    await newUser.save();
+  }
+
 
   res
   .status(201)
-  .json({ message: "User registered successfully please login to your account"});
+  .json({ message: "User registered successfully please Verify your account"});
 })
 
 
