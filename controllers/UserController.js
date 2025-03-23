@@ -30,3 +30,29 @@ module.exports.deleteUser = asyncHandler(async(req , res) => {
 
     res.status(200).json({message: "User deleted successfully"})
 })
+
+
+
+// ==================================
+// @desc Update user
+// @route /api/v1/users/update-user/:id
+// @method PUT
+// @access private (admin)
+// ==================================
+module.exports.updateUser = asyncHandler(async(req, res) => {
+    const {name , username , role} = req.body;
+    const userId = req.params.id;
+
+    const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { name, username, role },
+        { new: true, runValidators: true }
+    );
+
+    if (!updatedUser) {
+        return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ message: 'User updated successfully'});
+
+})
