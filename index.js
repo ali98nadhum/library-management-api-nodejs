@@ -23,6 +23,7 @@ app.use(cors({
 // Routes
 app.use("/api/v1/categories" , require("./routes/CategoryRoute"));
 app.use("/api/v1/auth" , require("./routes/AuthRoute"));
+app.use("/api/v1/users" , require("./routes/UsersRoute"));
 
 
 
