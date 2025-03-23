@@ -15,6 +15,8 @@ const router = require("express").Router();
 router
   .route("/register")
   .post(
+    AuthService.protect,
+    AuthService.allowedTo("admin"),
     registerValidator,
     register
   );
