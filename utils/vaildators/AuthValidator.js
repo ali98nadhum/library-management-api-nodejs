@@ -74,3 +74,33 @@ exports.registerValidator = [
       check("id").isMongoId().withMessage("Invalid category id"),
       VaildatorMiddleware
   ]
+
+
+  exports.updateUserValidator = [
+    check("id").isMongoId().withMessage("Invalid category id"),
+    check("name")
+      .optional()
+      .isLength({ min: 3 })
+      .withMessage("Too short category title")
+      .isLength({ max: 25 })
+      .withMessage("Too long category title"),
+
+      check("username")
+      .optional()
+      .isLength({ min: 3 })
+      .withMessage("Too short username")
+      .isLength({ max: 20 })
+      .withMessage("Too long username")
+      .custom(async (val) => {
+          const existingUsername = await UserModel.findOne({ username: val });
+          if (existingUsername) {
+            throw new Error("username already exists");
+          }
+        }),
+        
+        check("role")
+    .optional()
+    .isIn(["admin", "employee"])
+    .withMessage("Role must be either 'admin' or 'employee'"),
+    VaildatorMiddleware
+]

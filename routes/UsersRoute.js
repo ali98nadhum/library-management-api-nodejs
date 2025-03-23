@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const AuthService = require("../utils/token/AuthService");
 const { getAllUsers, deleteUser, updateUser } = require("../controllers/UserController");
-const {deleteUserValidator} = require("../utils/vaildators/AuthValidator");
+const {deleteUserValidator , updateUserValidator} = require("../utils/vaildators/AuthValidator");
 
 router
   .route("/get-all-users")
@@ -15,6 +15,6 @@ router
 
 router
   .route("/update-user/:id")
-  .put(updateUser)
+  .put(AuthService.protect,AuthService.allowedTo("admin"),updateUserValidator,updateUser)
 
 module.exports = router;
