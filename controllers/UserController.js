@@ -43,7 +43,7 @@ module.exports.updateUser = asyncHandler(async(req, res) => {
     const {name , username , role} = req.body;
     const userId = req.params.id;
 
-    const updatedUser = await User.findByIdAndUpdate(
+    const updatedUser = await UserModel.findByIdAndUpdate(
         userId,
         { name, username, role },
         { new: true, runValidators: true }
