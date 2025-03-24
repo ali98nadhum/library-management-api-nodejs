@@ -2,6 +2,7 @@ const {
   register,
   login,
   changePassword,
+  verifyRegistration,
 } = require("../controllers/AuthControler");
 const {
   registerValidator,
@@ -28,5 +29,9 @@ router.route("/login").post(loginValidator, login);
 router
   .route("/change-password")
   .post(AuthService.protect, changePasswordValidator, changePassword);
+
+router
+  .route("/verify-registration")
+  .post(verifyRegistration)
 
 module.exports = router;
