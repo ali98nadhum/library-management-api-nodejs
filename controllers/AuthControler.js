@@ -80,6 +80,7 @@ if(!user){
 
 user.isActive = true;
 user.verifyCode = undefined;
+user.verifyCodeExpires = undefined;
 
 await user.save();
 
