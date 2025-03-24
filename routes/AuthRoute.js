@@ -8,6 +8,7 @@ const {
   registerValidator,
   loginValidator,
   changePasswordValidator,
+  verifyRegistrationValidator
 } = require("../utils/vaildators/AuthValidator");
 const AuthService = require("../utils/token/AuthService");
 const router = require("express").Router();
@@ -32,6 +33,6 @@ router
 
 router
   .route("/verify-registration")
-  .post(verifyRegistration)
+  .post(verifyRegistrationValidator,verifyRegistration)
 
 module.exports = router;
