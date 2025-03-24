@@ -6,6 +6,7 @@ const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const sendEmail = require("../utils/email/sendEmail");
 const verifyCodeTemplate = require("../utils/emailTemplates/verifyCodeTemplate");
+const welcomeTemplate = require("../utils/emailTemplates/welcomeTemplate");
 
 
 // ==================================
@@ -87,9 +88,9 @@ await user.save();
 // send email to verified user
 try {
   await sendEmail({
-    email: newUser.email,
+    email: user.email,
     subject: "تم تأكيد حسابك",
-    message: 
+    message: welcomeTemplate(user.name)
   })
 } catch (error) {
   console.log(error);
