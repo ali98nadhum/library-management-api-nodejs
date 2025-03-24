@@ -104,3 +104,11 @@ exports.registerValidator = [
     .withMessage("Role must be either 'admin' or 'employee'"),
     VaildatorMiddleware
 ]
+
+
+exports.verifyRegistrationValidator = [
+  check("verifyCode")
+  .notEmpty().withMessage("verify Code is required")
+  .isLength({min:6 , max: 6}).withMessage("Code must be at least 6 characters"),
+  VaildatorMiddleware
+]
