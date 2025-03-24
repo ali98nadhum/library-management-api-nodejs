@@ -62,6 +62,33 @@ module.exports.register = asyncHandler(async(req , res) => {
 
 
 // ==================================
+// @desc verify registration
+// @route /api/v1/auth/verify-registration
+// @method POST
+// @access private (admin)
+// ==================================
+module.exports.verifyRegistration = asyncHandler(async(req , res) => {
+  const hashVerifyCode = crypto.createHash('sha256').update(req.body.verifyCode).digest('hex');
+  const user = await UserModel.findOne({
+    verifyCode:hashVerifyCode,
+    verifyCodeExpires: {$gt : Date.now()}
+})
+
+if(!user){
+  return res.status(400).json({message: "verify Code is invlid or expired"})
+}
+
+user.isActive = true;
+user.verifyCode = undefined;
+
+await user.save();
+
+res.status(200).json({message: "account verified successfully"})
+})
+
+
+
+// ==================================
 // @desc login 
 // @route /api/v1/auth/login
 // @method POST
