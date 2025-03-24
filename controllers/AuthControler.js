@@ -84,6 +84,18 @@ user.verifyCodeExpires = undefined;
 
 await user.save();
 
+// send email to verified user
+try {
+  await sendEmail({
+    email: newUser.email,
+    subject: "تم تأكيد حسابك",
+    message: 
+  })
+} catch (error) {
+  console.log(error);
+}
+
+
 res.status(200).json({message: "account verified successfully"})
 })
 
