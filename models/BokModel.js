@@ -25,12 +25,14 @@ const BookSchema = new mongoose.Schema(
     publishYear: {
       type: Number,
       trim: true,
-      required: [true, "publish year is required"],
     },
     publisher: {
       type: String,
       trim: true,
-      required: [true, "publisher is required"],
+    },
+    available:{
+        type: Boolean,
+        default: true,
     },
     imageCover: {
       url: { type: String },
