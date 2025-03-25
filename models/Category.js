@@ -12,7 +12,7 @@ const CategorySchema = new mongoose.Schema(
             maxlength: [50, "Category title should not exceed 50 characters long"]
         }
     },
-    {timestamps: true}
+    {timestamps: true , toJSON: { virtuals: true }, toObject: { virtuals: true }}
 )
 
 

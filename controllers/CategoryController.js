@@ -23,7 +23,7 @@ module.exports.getAllCategories = asyncHandler(async (req , res) => {
 // @access private (admin + employees)
 // ==================================
 module.exports.getCategoryById = asyncHandler(async (req , res) => {
-    const category = await CategoryModel.findById(req.params.id);
+    const category = await CategoryModel.findById(req.params.id).populate("books");
     if (!category){
         return res.status(404).json({message: "Category not found"})
     }

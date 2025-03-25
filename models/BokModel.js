@@ -40,7 +40,7 @@ const BookSchema = new mongoose.Schema(
     },
     category: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "categoryModel",
+      ref: "CategoryModel",
       required: [true, "category is required"],
     },
   },
