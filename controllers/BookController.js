@@ -36,6 +36,7 @@ module.exports.createNewBook = asyncHandler(async(req , res) => {
         publishYear: req.body.publishYear,
         publisher: req.body.publisher,
         category: req.body.category,
+        price: req.body.price,
         imageCover: { url: imageUrl, publicId },
     })
 
