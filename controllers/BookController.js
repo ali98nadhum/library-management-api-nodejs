@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const { BookModel } = require("../models/BokModel");
+const { BookModel } = require("../models/BookModel");
 const { uploadImageToUploadcare , deleteImageFromUploadcare } = require("../utils/uploadImage/uploadImageToUploadcare");
 
 
