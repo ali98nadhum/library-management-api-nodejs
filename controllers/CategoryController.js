@@ -10,7 +10,7 @@ const {CategoryModel} = require("../models/Category");
 // @access private (admin + employees)
 // ==================================
 module.exports.getAllCategories = asyncHandler(async (req , res) => {
-    const categories  = await CategoryModel.find({});
+    const categories  = await CategoryModel.find({}).populate("books");
     res.status(200).json({data: categories})
 })
 
