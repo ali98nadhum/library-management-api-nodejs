@@ -11,8 +11,8 @@ router
   .post(
     AuthService.protect,
     AuthService.allowedTo("admin"),
-    createBookValidator,
     uploadPhoto.single("image"),
+    createBookValidator,
     createNewBook
   );
 
