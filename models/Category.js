@@ -15,6 +15,14 @@ const CategorySchema = new mongoose.Schema(
     {timestamps: true}
 )
 
+
+// for get books
+CategorySchema.virtual("books", {
+    ref: "BookModel", 
+    localField: "_id", 
+    foreignField: "category",
+  });
+
 const CategoryModel = mongoose.model("CategoryModel" , CategorySchema);
 
 
