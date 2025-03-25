@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const { BookModel } = require("../models/BokModel");
+const { uploadImageToUploadcare , deleteImageFromUploadcare } = require("../utils/uploadImage/uploadImageToUploadcare");
 
 
 // ==================================
@@ -22,6 +23,11 @@ module.exports.getAllBooks = asyncHandler(async(req , res) => {
 // @access private (admin)
 // ==================================
 module.exports.createNewBook = asyncHandler(async(req , res) => {
+
+
+     //  Upload image
+  const { imageUrl, publicId } = await uploadImageToUploadcare(req.file);
+
     // Create new category
     const newBook = await BookModel.create({
         title: req.body.title,
@@ -29,7 +35,8 @@ module.exports.createNewBook = asyncHandler(async(req , res) => {
         quantity: req.body.quantity,
         publishYear: req.body.publishYear,
         publisher: req.body.publisher,
-        category: req.body.category
+        category: req.body.category,
+        imageCover: { url: imageUrl, publicId },
     })
 
     await newBook.save();
