@@ -20,6 +20,14 @@ exports.createBookValidator = [
     .isLength({ max: 50 })
     .withMessage("author name should not exceed 50 characters"),
 
+    check("price")
+    .notEmpty()
+    .withMessage("price is required")
+    .isNumeric()
+    .withMessage("price must be a number")
+    .isInt({min: 0})
+    .withMessage("quantity must be 0 or greater"),
+
     check("quantity")
     .notEmpty()
     .withMessage("quantity is required")
