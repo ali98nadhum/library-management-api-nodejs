@@ -16,6 +16,12 @@ const BookSchema = new mongoose.Schema(
       minlength: [3, "author name must be at least 3 characters"],
       maxlength: [50, "author name should not exceed 50 characters"],
     },
+    price: {
+      type: Number,
+      trim: true,
+      required: [true, "Price is required"],
+      min: [0, "Price must be at least 0 IQD"],
+    },
     quantity: {
       type: Number,
       required: [true, "Product quantity is required"],
@@ -32,9 +38,9 @@ const BookSchema = new mongoose.Schema(
       minlength: [3, "publisher name must be at least 3 characters"],
       maxlength: [50, "publisher name should not exceed 50 characters"],
     },
-    available:{
-        type: Boolean,
-        default: true,
+    available: {
+      type: Boolean,
+      default: true,
     },
     imageCover: {
       url: { type: String },
