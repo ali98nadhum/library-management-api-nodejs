@@ -75,7 +75,7 @@ module.exports.createNewBook = asyncHandler(async(req , res) => {
 
 // ==================================
 // @desc Delete book
-// @route /api/v1/books/delete-book/id
+// @route /api/v1/books/delete-book/:id
 // @method DELETE   
 // @access private (admin)
 // ==================================
