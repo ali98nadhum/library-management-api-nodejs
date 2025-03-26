@@ -25,7 +25,7 @@ router
 
 
   router
-  .route("delete-book/:id")
+  .route("/delete-book/:id")
   .delete(
     AuthService.protect,
     AuthService.allowedTo("admin"),

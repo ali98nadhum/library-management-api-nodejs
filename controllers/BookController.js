@@ -74,6 +74,51 @@ module.exports.createNewBook = asyncHandler(async(req , res) => {
 
 
 // ==================================
+// @desc Update book
+// @route /api/v1/books/update-book/:id
+// @method PUT
+// @access private (admin)
+// ==================================
+module.exports.updateBook = asyncHandler(async (req, res) => {
+  const book = await BookModel.findById(req.params.id);
+  if (!book) {
+    return res.status(404).json({ message: "Book not found for this id" });
+  }
+
+  // upload new image
+  let imageCover = book.imageCover;
+  if (req.file) {
+    const { imageUrl, publicId } = await uploadImageToUploadcare(req.file);
+    imageCover = { url: imageUrl, publicId: publicId };
+
+    // Delete old image
+    if (book.image.publicId) {
+      await deleteImageFromUploadcare(book.imageCover.publicId);
+    }
+  }
+
+  const updateBook = await BookModel.findByIdAndUpdate(
+    req.params.id,
+    {
+      title: req.body.title,
+      author: req.body.author,
+      price: req.body.price,
+      quantity: req.body.quantity,
+      publishYear: req.body.publishYear,
+      publisher: req.body.publisher,
+      available: req.body.available,
+      imageCover: imageCover,
+      category: req.body.category,
+    },
+    { new: true }
+  );
+
+  res.status(200).json({ message: "Book updated successfully" });
+});
+
+
+
+// ==================================
 // @desc Delete book
 // @route /api/v1/books/delete-book/:id
 // @method DELETE   
