@@ -59,3 +59,9 @@ exports.createBookValidator = [
 
     VaildatorMiddleware,
   ];
+
+
+  exports.getBookValidator = [
+    check("id").isMongoId().withMessage("Invalid book id"),
+    VaildatorMiddleware,
+  ];
