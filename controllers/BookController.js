@@ -70,3 +70,23 @@ module.exports.createNewBook = asyncHandler(async(req , res) => {
 
     res.status(201).json({message: "book created successfully"})
 })
+
+
+
+// ==================================
+// @desc Delete book
+// @route /api/v1/books/delete-book/id
+// @method DELETE   
+// @access private (admin)
+// ==================================
+module.exports.deleteBook = asyncHandler(async(req , res) => {
+    const book = await BookModel.findByIdAndDelete(req.params.id);
+    if(!book){
+        return res.status(404).json({message: "Book not found for this id"})
+    }
+
+    // delete image
+    await deleteImageFromUploadcare(book.imageCover.publicId)
+
+    res.status(200).json({message: "Book deleted successfully"})
+})
