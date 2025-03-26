@@ -1,5 +1,5 @@
-const { getAllBooks, createNewBook, getBook, deleteBook } = require("../controllers/BookController");
-const { createBookValidator , getBookValidator, deleteBookValidator } = require("../utils/vaildators/bookValidator");
+const { getAllBooks, createNewBook, getBook, deleteBook, updateBook } = require("../controllers/BookController");
+const { createBookValidator , getBookValidator, deleteBookValidator, updateBookValidator } = require("../utils/vaildators/bookValidator");
 const AuthService = require("../utils/token/AuthService");
 const uploadPhoto = require("../middlewares/configUploadImage");
 const router = require("express").Router();
@@ -22,6 +22,16 @@ router
     createBookValidator,
     createNewBook
   );
+
+
+  router
+  .route("/update-book/:id")
+  .put(
+    AuthService.protect,
+    AuthService.allowedTo("admin"),
+    updateBookValidator,
+    updateBook
+  )
 
 
   router
