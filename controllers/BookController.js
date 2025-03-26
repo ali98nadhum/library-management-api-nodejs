@@ -17,13 +17,29 @@ module.exports.getAllBooks = asyncHandler(async(req , res) => {
 
 
 // ==================================
+// @desc Get Book by id
+// @route /api/v1/books/:id
+// @method GET
+// @access private (admin + employees)
+// ==================================
+module.exports.getBook = asyncHandler(async(req , res) => {
+    const book = await BookModel.findById(req.params.id);
+    if(!book){
+        return res.status(404).json({message: "There is no book for this id"})
+    }
+
+    res.status(200).json({data: book})
+})
+
+
+
+// ==================================
 // @desc Create New Book
 // @route /api/v1/books/add-book
 // @method POST
 // @access private (admin)
 // ==================================
 module.exports.createNewBook = asyncHandler(async(req , res) => {
-
 
      //  Upload image
   const { imageUrl, publicId } = await uploadImageToUploadcare(req.file);
