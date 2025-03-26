@@ -1,5 +1,5 @@
 const { getAllBooks, createNewBook, getBook } = require("../controllers/BookController");
-const { createBookValidator } = require("../utils/vaildators/bookValidator");
+const { createBookValidator , getBookValidator } = require("../utils/vaildators/bookValidator");
 const AuthService = require("../utils/token/AuthService");
 const uploadPhoto = require("../middlewares/configUploadImage");
 const router = require("express").Router();
@@ -11,7 +11,7 @@ router
 
 router
 .route("/:id")
-.get(getBook);
+.get(getBookValidator,getBook);
 
 router
   .route("/add-book")

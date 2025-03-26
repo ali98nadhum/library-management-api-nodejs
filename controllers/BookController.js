@@ -10,8 +10,18 @@ const { uploadImageToUploadcare , deleteImageFromUploadcare } = require("../util
 // @access private (admin + employees)
 // ==================================
 module.exports.getAllBooks = asyncHandler(async(req , res) => {
-    const books = await BookModel.find({})
-    res.status(200).json({data: books})
+    const page = req.query.page * 1 || 1;
+    const limit = req.query.limit * 6 || 6;
+    const skip = (page-1) * limit;
+    const { search , author  } = req.query;
+    // search book by title and author
+    const query = Object.assign(
+        search ? { title: { $regex: search, $options: "i" } } : {},
+        author ? { author } : {}
+    );
+    const books = await BookModel.find(query).skip(skip).limit(limit);
+    const totalBooks = await BookModel.countDocuments(query);
+    res.status(200).json({results:totalBooks , page , data: books})
 })
 
 
