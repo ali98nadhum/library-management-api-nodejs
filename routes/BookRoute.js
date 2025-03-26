@@ -29,6 +29,7 @@ router
   .put(
     AuthService.protect,
     AuthService.allowedTo("admin"),
+    uploadPhoto.single("image"),
     updateBookValidator,
     updateBook
   )

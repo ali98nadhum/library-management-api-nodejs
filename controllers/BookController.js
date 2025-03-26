@@ -92,7 +92,7 @@ module.exports.updateBook = asyncHandler(async (req, res) => {
     imageCover = { url: imageUrl, publicId: publicId };
 
     // Delete old image
-    if (book.image.publicId) {
+    if (book.imageCover.publicId) {
       await deleteImageFromUploadcare(book.imageCover.publicId);
     }
   }
