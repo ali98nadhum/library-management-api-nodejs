@@ -17,7 +17,7 @@ const OrderSchema = new mongoose.Schema(
     deliveryStatus: {
       type: String,
       required: true,
-      enum: ["جاري التوصيل", "تم التوصيل"],
+      enum: ["جاري التوصيل", "تم التوصيل" , "تم الالغاء"],
       default: "جاري التوصيل",
     },
     totalPrice: {
@@ -31,6 +31,8 @@ const OrderSchema = new mongoose.Schema(
     address: {
       type: String,
       required: [true, "Address is required"],
+      minlength: 10,
+      maxlength: 150,
     },
     books: [
       {
