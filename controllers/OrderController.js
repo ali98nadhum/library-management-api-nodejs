@@ -23,49 +23,46 @@ module.exports.getAllOrders = asyncHandler(async(req, res) => {
 // @method POST
 // @access private (admin + employees)
 // ==================================
-module.exports.createOrder = asyncHandler(async(req, res) => {
-    try {
-        const {custmerName, phone, address, books, user} = req.body;
+module.exports.createOrder = asyncHandler(async (req, res) => {
+  try {
+    const { custmerName, phone, address, books, user } = req.body;
 
-    // حساب عدد الطلبات لكل كتاب
+    // حساب عدد الطلبات لكل كتاب || Calculate the number of orders per book
     const bookCounts = books.reduce((acc, bookId) => {
-        acc[bookId] = (acc[bookId] || 0) + 1;
-        return acc;
+      acc[bookId] = (acc[bookId] || 0) + 1;
+      return acc;
     }, {});
 
-    // التحقق من وجود جميع الكتب
+    // التحقق من وجود جميع الكتب  || Check that all books exist
     const foundBooks = await checkBookAvailability(bookCounts);
 
-    // التحقق من توفر الكمية المطلوبة
+    // التحقق من توفر الكمية المطلوبة|| Check quantity books
     checkStock(foundBooks, bookCounts);
-    
 
-  // حساب السعر الإجمالي
-  const totalPrice = calculateTotalPrice(foundBooks, bookCounts);
+    // Calculate the total price
+    const totalPrice = calculateTotalPrice(foundBooks, bookCounts);
 
-
-
-    // إنشاء الطلب إذا كل شيء جيد
     const order = new OrderModel({
-        custmerName,
-        totalPrice,
-        phone,
-        address,
-        books,
-        user,
+      custmerName,
+      totalPrice,
+      phone,
+      address,
+      books,
+      user,
     });
 
     await order.save();
 
-    // تحديث كمية الكتب في المخزن
+    // Update the quantity of books in the Db
     await updateStock(foundBooks, bookCounts);
 
     res.status(201).json({
-        message: "تم إنشاء الطلب بنجاح",
-        order: order
+      message: "تم إنشاء الطلب بنجاح",
+      order: order,
     });
-    } catch (error) {
-        res.status(error.status || 500).json({ message: error.message || "حدث خطأ ما", error });
-    }
-    
+  } catch (error) {
+    res
+      .status(error.status || 500)
+      .json({ message: error.message || "حدث خطأ ما", error });
+  }
 });
