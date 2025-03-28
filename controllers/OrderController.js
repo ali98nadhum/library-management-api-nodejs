@@ -31,6 +31,20 @@ module.exports.getAllOrders = asyncHandler(async(req, res) => {
 
 
 // ==================================
+// @desc Get Order by id
+// @route /api/v1/orders/:id
+// @method GET
+// @access private (admin + employees)
+// ==================================
+module.exports.getOrderByID = asyncHandler(async(req , res) => {
+    const order = await OrderModel.findById(req.params.id);
+    if(!order){
+        return res.status(404).json({message: "There is no order for this id"})
+    }
+})
+
+
+// ==================================
 // @desc Create a new Order
 // @route /api/v1/orders
 // @method POST
