@@ -12,8 +12,21 @@ const { checkBookAvailability , checkStock , calculateTotalPrice , updateStock }
 // @access private (admin + employees)
 // ==================================
 module.exports.getAllOrders = asyncHandler(async(req, res) => {
-    const orders = await OrderModel.find({})
-    res.status(200).json({data: orders})
+    // Pagination  orders
+    const page = req.query.page * 1 || 1;
+    const limit = req.query.limit * 6 || 6;
+    const skip = (page-1) * limit;
+
+    // search orders by custmerName
+    const { custmerName } = req.query;
+    let filter = {};
+    if (custmerName) {
+        filter.custmerName = { $regex: custmerName, $options: "i" }; 
+    }
+
+    const orders = await OrderModel.find(filter).skip(skip).limit(limit)
+    const totalOrder = await OrderModel.countDocuments(filter);
+    res.status(200).json({results:totalOrder , page , data: orders})
 })
 
 
