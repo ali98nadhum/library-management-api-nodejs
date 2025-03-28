@@ -41,6 +41,8 @@ module.exports.getOrderByID = asyncHandler(async(req , res) => {
     if(!order){
         return res.status(404).json({message: "There is no order for this id"})
     }
+
+    res.status(200).json({results:order})
 })
 
 

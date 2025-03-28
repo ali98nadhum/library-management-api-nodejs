@@ -7,12 +7,26 @@ const router = require("express").Router();
 
 router
 .route("/")
-.get(AuthService.protect,AuthService.allowedTo("admin" , "employee"),getAllOrders)
-.post(createOrderValidator , createOrder)
+.get(
+    AuthService.protect,
+    AuthService.allowedTo("admin" , "employee")
+    ,getAllOrders
+)
+.post(
+    AuthService.protect,
+    AuthService.allowedTo("user" , "employee"),
+    createOrderValidator , 
+    createOrder
+)
 
 router
-.route(":id")
-.get(getOrderByIdValidator , getOrderByID)
+.route("/:id")
+.get(
+    AuthService.protect,
+    AuthService.allowedTo("admin", "employee"),
+    getOrderByIdValidator , 
+    getOrderByID
+)
 
 
 module.exports = router;
