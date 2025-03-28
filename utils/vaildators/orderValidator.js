@@ -36,4 +36,13 @@ exports.createOrderValidator = [
   ];
 
 
+
+  exports.getOrderByIdValidator = [
+   check("id")
+   .isMongoId()
+   .withMessage("Invalid order id"),
+    VaildatorMiddleware,
+  ];
+
+
  
