@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const { OrderModel } = require("../models/OrderModel");
 const { BookModel } = require("../models/BookModel");
-const { checkBookAvailability , checkStock , calculateTotalPrice } = require("../helper/orderHelper/orderHelper");
+const { checkBookAvailability , checkStock , calculateTotalPrice , updateStock } = require("../helper/orderHelper/orderHelper");
 
 
 
@@ -58,14 +58,7 @@ module.exports.createOrder = asyncHandler(async(req, res) => {
     await order.save();
 
     // تحديث كمية الكتب في المخزن
-    await Promise.all(foundBooks.map(async (book) => {
-        const requestedCount = bookCounts[book._id.toString()];
-        book.quantity -= requestedCount;
-        if (book.quantity === 0) {
-            book.available = false;
-        }
-        await book.save();
-    }));
+    await updateStock(foundBooks, bookCounts);
 
     res.status(201).json({
         message: "تم إنشاء الطلب بنجاح",

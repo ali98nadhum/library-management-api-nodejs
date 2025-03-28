@@ -37,3 +37,13 @@ exports.checkStock = (foundBooks, bookCounts) => {
 exports.calculateTotalPrice = (foundBooks, bookCounts) => {
     return foundBooks.reduce((total, book) => total + book.price * bookCounts[book._id.toString()], 0);
 };
+
+
+
+exports.updateStock = async (foundBooks, bookCounts) => {
+    await Promise.all(foundBooks.map(async (book) => {
+        book.quantity -= bookCounts[book._id.toString()];
+        book.available = book.quantity > 0;
+        await book.save();
+    }));
+};
