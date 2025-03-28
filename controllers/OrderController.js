@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const { OrderModel } = require("../models/OrderModel");
 const { BookModel } = require("../models/BookModel");
+const { checkBookAvailability } = require("../helper/orderHelper/orderHelper");
 
 
 
@@ -31,20 +32,8 @@ module.exports.createOrder = asyncHandler(async(req, res) => {
         return acc;
     }, {});
 
-    // الحصول على معلومات الكتب مع الكميات
-    const bookIds = Object.keys(bookCounts);
-    const foundBooks = await BookModel.find({ _id: { $in: bookIds } });
-
     // التحقق من وجود جميع الكتب
-    if (foundBooks.length !== bookIds.length) {
-        const missingBooks = bookIds.filter(id => 
-            !foundBooks.some(book => book._id.toString() === id)
-        );
-        return res.status(404).json({ 
-            message: "بعض الكتب غير متوفرة",
-            missingBooks 
-        });
-    }
+    const foundBooks = await checkBookAvailability(bookCounts);
 
     // التحقق من توفر الكمية المطلوبة
     const insufficientQuantityBooks = [];
