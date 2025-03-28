@@ -14,3 +14,21 @@ exports.checkBookAvailability = async (bookCounts) => {
     }
     return foundBooks;
 };
+
+
+
+exports.checkStock = (foundBooks, bookCounts) => {
+    const insufficientBooks = foundBooks.filter(book => book.quantity < bookCounts[book._id.toString()]);
+    if (insufficientBooks.length > 0) {
+        throw { 
+            status: 400, 
+            message: "الكمية غير كافية لبعض الكتب", 
+            insufficientQuantityBooks: insufficientBooks.map(book => ({
+                bookId: book._id,
+                title: book.title,
+                availableQuantity: book.quantity,
+                requestedQuantity: bookCounts[book._id.toString()]
+            }))
+        };
+    }
+};

@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const { OrderModel } = require("../models/OrderModel");
 const { BookModel } = require("../models/BookModel");
-const { checkBookAvailability } = require("../helper/orderHelper/orderHelper");
+const { checkBookAvailability , checkStock } = require("../helper/orderHelper/orderHelper");
 
 
 
@@ -24,7 +24,8 @@ module.exports.getAllOrders = asyncHandler(async(req, res) => {
 // @access private (admin + employees)
 // ==================================
 module.exports.createOrder = asyncHandler(async(req, res) => {
-    const {custmerName, phone, address, books, user} = req.body;
+    try {
+        const {custmerName, phone, address, books, user} = req.body;
 
     // حساب عدد الطلبات لكل كتاب
     const bookCounts = books.reduce((acc, bookId) => {
@@ -36,26 +37,7 @@ module.exports.createOrder = asyncHandler(async(req, res) => {
     const foundBooks = await checkBookAvailability(bookCounts);
 
     // التحقق من توفر الكمية المطلوبة
-    const insufficientQuantityBooks = [];
-    
-    foundBooks.forEach(book => {
-        const requestedCount = bookCounts[book._id.toString()];
-        if (book.quantity < requestedCount) {
-            insufficientQuantityBooks.push({
-                bookId: book._id,
-                title: book.title,
-                availableQuantity: book.quantity,
-                requestedQuantity: requestedCount
-            });
-        }
-    });
-
-    if (insufficientQuantityBooks.length > 0) {
-        return res.status(400).json({ 
-            message: "الكمية غير كافية لبعض الكتب",
-            insufficientQuantityBooks 
-        });
-    }
+    checkStock(foundBooks, bookCounts);
 
 
     // حساب totalPrice
@@ -92,4 +74,8 @@ foundBooks.forEach(book => {
         message: "تم إنشاء الطلب بنجاح",
         order: order
     });
+    } catch (error) {
+        res.status(error.status || 500).json({ message: error.message || "حدث خطأ ما", error });
+    }
+    
 });
