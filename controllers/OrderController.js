@@ -1,7 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const { OrderModel } = require("../models/OrderModel");
 const { BookModel } = require("../models/BookModel");
-const { checkBookAvailability , checkStock } = require("../helper/orderHelper/orderHelper");
+const { checkBookAvailability , checkStock , calculateTotalPrice } = require("../helper/orderHelper/orderHelper");
 
 
 
@@ -38,15 +38,12 @@ module.exports.createOrder = asyncHandler(async(req, res) => {
 
     // التحقق من توفر الكمية المطلوبة
     checkStock(foundBooks, bookCounts);
+    
+
+  // حساب السعر الإجمالي
+  const totalPrice = calculateTotalPrice(foundBooks, bookCounts);
 
 
-    // حساب totalPrice
-let totalPrice = 0;
-
-foundBooks.forEach(book => {
-    const requestedCount = bookCounts[book._id.toString()];
-    totalPrice += book.price * requestedCount;
-});
 
     // إنشاء الطلب إذا كل شيء جيد
     const order = new OrderModel({

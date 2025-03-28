@@ -32,3 +32,8 @@ exports.checkStock = (foundBooks, bookCounts) => {
         };
     }
 };
+
+
+exports.calculateTotalPrice = (foundBooks, bookCounts) => {
+    return foundBooks.reduce((total, book) => total + book.price * bookCounts[book._id.toString()], 0);
+};

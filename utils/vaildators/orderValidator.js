@@ -12,9 +12,7 @@ exports.createOrderValidator = [
     .isLength({ max: 50 })
     .withMessage("customer name should not exceed 50 characters"),
 
-    check("totalPrice")
-    .isNumeric()
-    .withMessage("total price must be a number"),
+   
 
     check("phone")
     .isMobilePhone("ar-IQ")
