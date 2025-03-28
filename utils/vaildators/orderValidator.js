@@ -32,6 +32,7 @@ exports.createOrderValidator = [
     check("books")
     .notEmpty()
     .withMessage("books is required")
+    .isMongoId().withMessage("Invalid book id")
     .isArray(),
     VaildatorMiddleware,
   ];
