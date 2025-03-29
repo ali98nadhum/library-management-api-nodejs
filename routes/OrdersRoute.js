@@ -1,8 +1,8 @@
 
 
-const { getAllOrders, createOrder, getOrderByID, updateOrder } = require("../controllers/OrderController");
+const { getAllOrders, createOrder, getOrderByID, updateOrder, deleteOrder } = require("../controllers/OrderController");
 const AuthService = require("../utils/token/AuthService");
-const { createOrderValidator, getOrderByIdValidator, updateOrderValidator } = require("../utils/vaildators/orderValidator");
+const { createOrderValidator, getOrderByIdValidator, updateOrderValidator, deleteOrderValidator } = require("../utils/vaildators/orderValidator");
 const router = require("express").Router();
 
 router
@@ -32,6 +32,12 @@ router
     AuthService.allowedTo("admin" , "employee"),
     updateOrderValidator
     ,updateOrder
+)
+.delete(
+    AuthService.protect,
+    AuthService.allowedTo("admin"),
+    deleteOrderValidator,
+    deleteOrder
 )
 
 
