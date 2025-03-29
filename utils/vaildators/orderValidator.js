@@ -56,6 +56,7 @@ exports.createOrderValidator = [
 
 
     check("phone")
+    .optional()
     .isMobilePhone("ar-IQ")
     .withMessage("Invalid phone number"),
 

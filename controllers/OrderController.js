@@ -104,28 +104,33 @@ module.exports.createOrder = asyncHandler(async (req, res) => {
 // @method PUT
 // @access private (admin + employees)
 // ==================================
-module.exports.updateOrder = asyncHandler(async(req , res) => {
-  const { custmerName , status , deliveryStatus , address , phone} = req.body;
+module.exports.updateOrder = asyncHandler(async (req, res) => {
+  const { custmerName, status, deliveryStatus, address, phone } = req.body;
 
   const order = await OrderModel.findByIdAndUpdate(
     req.params.id,
-    { custmerName, status, deliveryStatus, address , phone},
+    {
+      custmerName,
+      status,
+      deliveryStatus: status === "تم الالغاء" ? status : deliveryStatus,
+      address,
+      phone,
+    },
     { new: true }
-  )
+  ).populate("books", "title");
 
-  if(!order){
-    return res.status(404).json({message: "Order not found"})
+  if (!order) {
+    return res.status(404).json({ message: "Order not found" });
+  }
+
+  if (status === "تم الالغاء") {
+    for (const bookId of order.books) {
+      await BookModel.updateOne({ _id: bookId }, { $inc: { quantity: 1 } });
+    }
   }
 
 
-  if (status === 'تم الالغاء') {
-    for (const bookId of order.books) {
-        await BookModel.updateOne({ _id: bookId }, { $inc: { quantity: 1 } });
-    }
-}
-
-
-const updatedOrder = await OrderModel.findById(order._id).populate('books', 'title');
-
-res.status(200).json({ message: "تم تحديث حالة الطلب بنجاح" , order: updatedOrder });
-})
+  res
+    .status(200)
+    .json({ message: "تم تحديث حالة الطلب بنجاح", order: order });
+});
