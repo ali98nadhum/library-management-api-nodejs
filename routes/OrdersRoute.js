@@ -2,7 +2,7 @@
 
 const { getAllOrders, createOrder, getOrderByID, updateOrder } = require("../controllers/OrderController");
 const AuthService = require("../utils/token/AuthService");
-const { createOrderValidator, getOrderByIdValidator } = require("../utils/vaildators/orderValidator");
+const { createOrderValidator, getOrderByIdValidator, updateOrderValidator } = require("../utils/vaildators/orderValidator");
 const router = require("express").Router();
 
 router
@@ -27,7 +27,12 @@ router
     getOrderByIdValidator , 
     getOrderByID
 )
-.put(updateOrder)
+.put(
+    AuthService.protect,
+    AuthService.allowedTo("admin" , "employee"),
+    updateOrderValidator
+    ,updateOrder
+)
 
 
 module.exports = router;
