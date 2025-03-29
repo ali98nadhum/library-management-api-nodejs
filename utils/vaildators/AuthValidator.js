@@ -98,7 +98,7 @@ exports.registerValidator = [
           }
         }),
         
-        check("role")
+     check("role")
     .optional()
     .isIn(["admin", "employee"])
     .withMessage("Role must be either 'admin' or 'employee'"),

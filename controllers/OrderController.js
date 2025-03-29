@@ -105,11 +105,11 @@ module.exports.createOrder = asyncHandler(async (req, res) => {
 // @access private (admin + employees)
 // ==================================
 module.exports.updateOrder = asyncHandler(async(req , res) => {
-  const { custmerName , status , deliveryStatus , address} = req.body;
+  const { custmerName , status , deliveryStatus , address , phone} = req.body;
 
   const order = await OrderModel.findByIdAndUpdate(
     req.params.id,
-    { custmerName, status, deliveryStatus, address},
+    { custmerName, status, deliveryStatus, address , phone},
     { new: true }
   )
 
