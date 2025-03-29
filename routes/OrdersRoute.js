@@ -14,7 +14,7 @@ router
 )
 .post(
     AuthService.protect,
-    AuthService.allowedTo("user" , "employee"),
+    AuthService.allowedTo("admin" , "employee"),
     createOrderValidator , 
     createOrder
 )

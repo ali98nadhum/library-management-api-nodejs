@@ -105,11 +105,11 @@ module.exports.createOrder = asyncHandler(async (req, res) => {
 // @access private (admin + employees)
 // ==================================
 module.exports.updateOrder = asyncHandler(async(req , res) => {
-  const { custmerName , status , deliveryStatus , address , books} = req.body;
+  const { custmerName , status , deliveryStatus , address} = req.body;
 
   const order = await OrderModel.findByIdAndUpdate(
     req.params.id,
-    { custmerName, status, deliveryStatus, address, books },
+    { custmerName, status, deliveryStatus, address},
     { new: true }
   )
 
@@ -117,11 +117,15 @@ module.exports.updateOrder = asyncHandler(async(req , res) => {
     return res.status(404).json({message: "Order not found"})
   }
 
+
   if (status === 'تم الالغاء') {
     for (const bookId of order.books) {
         await BookModel.updateOne({ _id: bookId }, { $inc: { quantity: 1 } });
     }
 }
 
-res.status(200).json({ message: "تم تحديث حالة الطلب بنجاح" });
+
+const updatedOrder = await OrderModel.findById(order._id).populate('books', 'title');
+
+res.status(200).json({ message: "تم تحديث حالة الطلب بنجاح" , order: updatedOrder });
 })
