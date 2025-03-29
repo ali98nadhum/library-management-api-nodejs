@@ -134,3 +134,17 @@ module.exports.updateOrder = asyncHandler(async (req, res) => {
     .status(200)
     .json({ message: "تم تحديث حالة الطلب بنجاح", order: order });
 });
+
+
+// ==================================
+// @desc delete order
+// @route /api/v1/orders/:id
+// @method DELETE
+// @access private (admin)
+// ==================================
+module.exports.deleteOrder = asyncHandler(async(req, res) => {
+  const order = await OrderModel.findByIdAndDelete(req.params.id);
+  if (!order) {
+    return res.status(404).json({ message: "Order not found" });
+  }
+})
