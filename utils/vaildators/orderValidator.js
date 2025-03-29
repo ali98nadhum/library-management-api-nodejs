@@ -72,3 +72,9 @@ exports.updateOrderValidator = [
     ),
   VaildatorMiddleware,
 ];
+
+
+exports.deleteOrderValidator = [
+  check("id").isMongoId().withMessage("Invalid order id"),
+  VaildatorMiddleware,
+];
