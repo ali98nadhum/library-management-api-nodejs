@@ -1,6 +1,6 @@
 
 
-const { getAllOrders, createOrder, getOrderByID } = require("../controllers/OrderController");
+const { getAllOrders, createOrder, getOrderByID, updateOrder } = require("../controllers/OrderController");
 const AuthService = require("../utils/token/AuthService");
 const { createOrderValidator, getOrderByIdValidator } = require("../utils/vaildators/orderValidator");
 const router = require("express").Router();
@@ -27,6 +27,7 @@ router
     getOrderByIdValidator , 
     getOrderByID
 )
+.put(updateOrder)
 
 
 module.exports = router;
