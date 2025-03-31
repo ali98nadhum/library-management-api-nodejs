@@ -26,7 +26,7 @@ app.use("/api/v1/auth" , require("./routes/AuthRoute"));
 app.use("/api/v1/users" , require("./routes/UsersRoute"));
 app.use("/api/v1/books" , require("./routes/BookRoute"));
 app.use("/api/v1/orders" , require("./routes/OrdersRoute"));
-app.use("/api/v1/Invoice" , require("./routes/OrdersRoute"));
+
 
 
 

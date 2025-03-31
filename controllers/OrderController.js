@@ -164,20 +164,21 @@ module.exports.generateInvoice = asyncHandler(async(req , res) => {
   const order = await OrderModel.findById(req.params.id).populate("books user");
   
   if (!order) {
-    throw new Error("الطلب غير موجود");
+    return res.status(404).json({ message: "Order not found" });
   }
 
-  return {
+
+  const orderData = {
     customer: order.custmerName,
     phone: order.phone,
     address: order.address,
-    status: order.status,
-    deliveryStatus: order.deliveryStatus,
     totalPrice: order.totalPrice,
     books: order.books.map(book => ({
       title: book.title,
       price: book.price,
     })),
     date: order.createdAt,
-  };
+  }
+
+  res.status(200).json({data:orderData})
 })

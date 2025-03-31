@@ -42,7 +42,7 @@ router
 
 
 router
-.route("/:id")
+.route("/Invoice/:id")
 .get(
     AuthService.protect,
     AuthService.allowedTo("admin", "employee"),
