@@ -150,3 +150,34 @@ module.exports.deleteOrder = asyncHandler(async(req, res) => {
 
   res.status(200).json({message: "Order deleted successfully"})
 })
+
+
+
+
+// ==================================
+// @desc generate Invoice 
+// @route /api/v1/Invoice/:id
+// @method GET
+// @access private (admin + employees)
+// ==================================
+const generateInvoice = async () => {
+  const order = await OrderModel.findById(req.params.id).populate("books user");
+  
+  if (!order) {
+    throw new Error("الطلب غير موجود");
+  }
+
+  return {
+    customer: order.custmerName,
+    phone: order.phone,
+    address: order.address,
+    status: order.status,
+    deliveryStatus: order.deliveryStatus,
+    totalPrice: order.totalPrice,
+    books: order.books.map(book => ({
+      title: book.title,
+      price: book.price,
+    })),
+    date: order.createdAt,
+  };
+};
