@@ -1,8 +1,8 @@
 
 
-const { getAllOrders, createOrder, getOrderByID, updateOrder, deleteOrder } = require("../controllers/OrderController");
+const { getAllOrders, createOrder, getOrderByID, updateOrder, deleteOrder , generateInvoice } = require("../controllers/OrderController");
 const AuthService = require("../utils/token/AuthService");
-const { createOrderValidator, getOrderByIdValidator, updateOrderValidator, deleteOrderValidator } = require("../utils/vaildators/orderValidator");
+const { createOrderValidator, getOrderByIdValidator, updateOrderValidator, deleteOrderValidator, generateInvoiceValidator } = require("../utils/vaildators/orderValidator");
 const router = require("express").Router();
 
 router
@@ -38,6 +38,16 @@ router
     AuthService.allowedTo("admin"),
     deleteOrderValidator,
     deleteOrder
+)
+
+
+router
+.route("/:id")
+.get(
+    AuthService.protect,
+    AuthService.allowedTo("admin", "employee"),
+    generateInvoiceValidator,
+    generateInvoice
 )
 
 

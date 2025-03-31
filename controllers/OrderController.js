@@ -160,7 +160,7 @@ module.exports.deleteOrder = asyncHandler(async(req, res) => {
 // @method GET
 // @access private (admin + employees)
 // ==================================
-const generateInvoice = async () => {
+module.exports.generateInvoice = asyncHandler(async(req , res) => {
   const order = await OrderModel.findById(req.params.id).populate("books user");
   
   if (!order) {
@@ -180,4 +180,4 @@ const generateInvoice = async () => {
     })),
     date: order.createdAt,
   };
-};
+})
