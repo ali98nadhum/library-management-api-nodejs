@@ -78,3 +78,9 @@ exports.deleteOrderValidator = [
   check("id").isMongoId().withMessage("Invalid order id"),
   VaildatorMiddleware,
 ];
+
+
+exports.generateInvoiceValidator = [
+  check("id").isMongoId().withMessage("Invalid order id"),
+  VaildatorMiddleware,
+];
